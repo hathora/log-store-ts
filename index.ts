@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-export default class LogStore {
+export class LogStore {
   private storageDir: string;
   private partitionFiles: Map<bigint, number>;
 
