@@ -1,0 +1,30 @@
+{
+  "name": "@hathora/log-store",
+  "version": "0.0.1",
+  "description": "Hathora replay log implementaion",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hathora/log-store-ts.git"
+  },
+  "keywords": [
+    "append-only",
+    "log",
+    "hathora"
+  ],
+  "author": "Harsh Pandey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hathora/log-store-ts/issues"
+  },
+  "homepage": "https://github.com/hathora/log-store-ts#readme",
+  "devDependencies": {
+    "@types/node": "15.0.1",
+    "typescript": "^4.2.4"
+  }
+}
