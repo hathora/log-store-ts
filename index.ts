@@ -3,16 +3,16 @@ import path from "path";
 
 export class LogStore {
   private storageDir: string;
-  private partitionFiles: Map<bigint, number>;
+  private partitionFiles: Map<string, number>;
 
   public constructor(storageDir: string) {
     this.storageDir = storageDir;
     this.partitionFiles = new Map();
   }
 
-  public append(partitionId: bigint, time: number, record: Uint8Array) {
+  public append(partitionId: string, time: number, record: Uint8Array) {
     if (!this.partitionFiles.has(partitionId)) {
-      this.partitionFiles.set(partitionId, fs.openSync(this.getPath(partitionId), "a"));
+      this.partitionFiles.set(partitionId, fs.openSync(path.join(this.storageDir, partitionId), "a"));
     }
     const fd = this.partitionFiles.get(partitionId)!;
 
@@ -22,8 +22,8 @@ export class LogStore {
     fs.appendFileSync(fd, Buffer.concat([header, record]));
   }
 
-  public load(partitionId: bigint) {
-    const fd = fs.openSync(this.getPath(partitionId), "r");
+  public load(partitionId: string) {
+    const fd = fs.openSync(path.join(this.storageDir, partitionId), "r");
     const metadataBuf = Buffer.alloc(12);
 
     const rows: { time: number; record: Buffer }[] = [];
@@ -39,15 +39,11 @@ export class LogStore {
     return rows;
   }
 
-  public unload(partitionId: bigint) {
+  public unload(partitionId: string) {
     const fd = this.partitionFiles.get(partitionId);
     if (fd !== undefined) {
       this.partitionFiles.delete(partitionId);
       fs.closeSync(fd);
     }
-  }
-
-  private getPath(partitionId: bigint) {
-    return path.join(this.storageDir, partitionId.toString(36));
   }
 }
